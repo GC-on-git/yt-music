@@ -1,0 +1,52 @@
+# Local application data
+data/
+!data/.gitkeep
+
+# Auth / secrets
+.env
+*.json
+!package.json
+oauth.json
+browser.json
+**/oauth.json
+**/browser.json
+.secrets/
+credentials/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+.env.local
+*.egg-info/
+.eggs/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Backups (keep local only)
+*.db
+*.db.bak
+*.sqlite
+*.sqlite3
+*.sql.gz

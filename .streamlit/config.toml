@@ -1,0 +1,40 @@
+[theme]
+base = "light"
+primaryColor = "#7776B7"
+backgroundColor = "#F7F5F0"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#292936"
+linkColor = "#7776B7"
+borderColor = "#E5E1EB"
+codeBackgroundColor = "#F0EDF7"
+codeTextColor = "#292936"
+dataframeBorderColor = "#E5E1EB"
+dataframeHeaderBackgroundColor = "#F0EDF7"
+dataframeHeaderTextColor = "#292936"
+font = "Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+headingFont = "Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+baseFontSize = 15
+baseFontWeight = 400
+headingFontSizes = ["2rem", "1.5rem", "1.125rem", "1rem", "0.875rem", "0.8125rem"]
+headingFontWeights = [600, 600, 600, 600, 500, 500]
+baseRadius = "10px"
+buttonRadius = "10px"
+showWidgetBorder = true
+showSidebarBorder = true
+linkUnderline = false
+redColor = "#A33F4A"
+orangeColor = "#875D18"
+yellowColor = "#875D18"
+greenColor = "#3F7658"
+blueColor = "#7776B7"
+violetColor = "#B8A7D9"
+grayColor = "#626273"
+chartCategoricalColors = ["#7776B7", "#3F7658", "#E9BDAA", "#B8A7D9", "#B8CCBA", "#875D18", "#626273"]
+
+[theme.sidebar]
+backgroundColor = "#F0EDF7"
+secondaryBackgroundColor = "#FFFFFF"
+codeBackgroundColor = "#FFFFFF"
+textColor = "#292936"
+borderColor = "#E5E1EB"
+primaryColor = "#7776B7"

@@ -1,0 +1,343 @@
+/* Pastel music studio — presentation only. Do not hide or block widgets. */
+
+:root {
+  --studio-ivory: #f7f5f0;
+  --studio-white: #ffffff;
+  --studio-lavender-grey: #f0edf7;
+  --studio-periwinkle: #7776b7;
+  --studio-lilac: #b8a7d9;
+  --studio-sage: #b8ccba;
+  --studio-peach: #e9bdaa;
+  --studio-charcoal: #292936;
+  --studio-slate: #626273;
+  --studio-muted: #777786;
+  --studio-border: #e5e1eb;
+  --studio-hover: #e9e5f4;
+  --studio-success: #3f7658;
+  --studio-error: #a33f4a;
+  --studio-warning: #875d18;
+  --studio-control-height: 2.5rem;
+}
+
+html,
+body,
+[data-testid="stAppViewContainer"],
+[data-testid="stApp"] {
+  background-color: var(--studio-ivory);
+  color: var(--studio-charcoal);
+}
+
+[data-testid="stHeader"] {
+  background: var(--studio-ivory);
+  border-bottom: 1px solid var(--studio-border);
+}
+
+[data-testid="stToolbar"] {
+  color: var(--studio-slate);
+}
+
+/* Theme <style> injection must not occupy a layout slot under the header. */
+[data-testid="stElementContainer"]:has(> [data-testid="stHtml"]),
+[data-testid="element-container"]:has(> [data-testid="stHtml"]) {
+  position: absolute;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+[data-testid="stSidebar"] {
+  background-color: var(--studio-lavender-grey);
+}
+
+[data-testid="stSidebar"] [data-testid="stSidebarHeader"],
+[data-testid="stSidebar"] [data-testid="stSidebarNavSeparator"] {
+  border-color: var(--studio-border);
+}
+
+[data-testid="stSidebarNavItems"] {
+  padding: 0.5rem 0.65rem 0;
+}
+
+[data-testid="stSidebarNavLink"] {
+  box-sizing: border-box;
+  border-radius: 10px;
+  margin: 2px 0;
+  padding: 0.45rem 0.7rem;
+  min-width: 0;
+  color: var(--studio-charcoal);
+  overflow: hidden;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+[data-testid="stSidebarNavLink"] span {
+  overflow-wrap: anywhere;
+}
+
+[data-testid="stSidebarNavLink"]:hover {
+  background-color: var(--studio-hover);
+  color: var(--studio-charcoal);
+}
+
+[data-testid="stSidebarNavLink"]:focus-visible {
+  outline: 2px solid var(--studio-periwinkle);
+  outline-offset: 2px;
+}
+
+[data-testid="stSidebarNavLink"][aria-current="page"],
+[data-testid="stSidebarNavLink"][aria-selected="true"] {
+  background-color: var(--studio-hover);
+  box-shadow: inset 3px 0 0 var(--studio-periwinkle);
+  font-weight: 600;
+}
+
+[data-testid="stSidebarNavSectionHeader"] {
+  color: var(--studio-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  padding: 0.85rem 0.7rem 0.25rem;
+}
+
+[data-testid="stMainBlockContainer"] {
+  box-sizing: border-box;
+  max-width: 1184px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 6rem;
+  padding-bottom: 3rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+[data-testid="stColumn"] {
+  min-width: 0;
+}
+
+h1,
+[data-testid="stHeading"] h1 {
+  letter-spacing: -0.02em;
+  color: var(--studio-charcoal);
+  margin-top: 0;
+  overflow-wrap: anywhere;
+  scroll-margin-top: 5.5rem;
+}
+
+[data-testid="stCaptionContainer"] {
+  color: var(--studio-muted);
+}
+
+[data-testid="stMetric"] {
+  box-sizing: border-box;
+  height: 100%;
+  min-width: 0;
+  background: var(--studio-white);
+  border: 1px solid var(--studio-border);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  box-shadow: 0 1px 2px rgba(41, 41, 54, 0.04);
+}
+
+[data-testid="stMetricLabel"] {
+  color: var(--studio-muted);
+  overflow-wrap: anywhere;
+}
+
+[data-testid="stMetricValue"] {
+  color: var(--studio-charcoal);
+  overflow-wrap: anywhere;
+}
+
+[data-testid="stButton"] > button,
+[data-testid="stFormSubmitButton"] button {
+  box-sizing: border-box;
+  border-radius: 10px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  min-height: var(--studio-control-height);
+  padding: 0.45rem 1rem;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+[data-testid="stButton"] > button:focus-visible,
+[data-testid="stFormSubmitButton"] button:focus-visible {
+  outline: 2px solid var(--studio-periwinkle);
+  outline-offset: 2px;
+}
+
+[data-testid="stButton"] > button[kind="primary"] {
+  background-color: var(--studio-periwinkle);
+  color: var(--studio-white);
+  border-color: var(--studio-periwinkle);
+}
+
+[data-testid="stButton"] > button[kind="primary"]:hover {
+  background-color: #6564a3;
+  border-color: #6564a3;
+}
+
+[data-testid="stButton"] > button[kind="secondary"] {
+  background-color: var(--studio-white);
+  color: var(--studio-charcoal);
+  border: 1px solid var(--studio-border);
+}
+
+[data-testid="stButton"] > button[kind="secondary"]:hover {
+  background-color: var(--studio-hover);
+  border-color: var(--studio-lilac);
+}
+
+[data-testid="stButton"] > button:disabled,
+[data-testid="stFormSubmitButton"] button:disabled {
+  opacity: 0.6;
+  color: var(--studio-slate);
+}
+
+div[data-testid="stAlert"] {
+  border-radius: 10px;
+  border: 1px solid var(--studio-border);
+}
+
+[data-testid="stExpander"] {
+  background: var(--studio-white);
+  border: 1px solid var(--studio-border);
+  border-radius: 12px;
+}
+
+[data-testid="stDataFrame"],
+[data-testid="stDataFrameResizable"] {
+  border: 1px solid var(--studio-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+[data-testid="stTextInput"] input,
+[data-testid="stNumberInput"] input,
+[data-testid="stTextArea"] textarea,
+[data-testid="stDateInput"] input {
+  box-sizing: border-box;
+  background-color: var(--studio-white);
+  color: var(--studio-charcoal);
+  border-radius: 10px;
+}
+
+[data-testid="stTextInput"] input,
+[data-testid="stNumberInput"] input,
+[data-testid="stDateInput"] input {
+  min-height: var(--studio-control-height);
+}
+
+[data-testid="stTextInput"] input::placeholder,
+[data-testid="stTextArea"] textarea::placeholder {
+  color: var(--studio-muted);
+}
+
+[data-baseweb="select"] {
+  background-color: var(--studio-white);
+}
+
+[data-baseweb="select"] > div {
+  min-height: var(--studio-control-height);
+}
+
+[data-testid="stCheckbox"] label,
+[data-testid="stRadio"] label {
+  color: var(--studio-charcoal);
+  overflow-wrap: anywhere;
+}
+
+[data-testid="stButtonGroup"] {
+  max-width: 100%;
+  flex-wrap: wrap;
+  row-gap: 0.35rem;
+}
+
+[data-testid="stButtonGroup"] button[data-checked="true"],
+[data-testid="stButtonGroup"] [aria-checked="true"] {
+  background-color: var(--studio-hover);
+  color: var(--studio-charcoal);
+  box-shadow: inset 0 0 0 1px var(--studio-periwinkle);
+}
+
+.song-card {
+  box-sizing: border-box;
+  background: var(--studio-lavender-grey);
+  border: 1px solid var(--studio-border);
+  border-radius: 12px;
+  min-height: 420px;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.4rem;
+  box-shadow: 0 1px 2px rgba(41, 41, 54, 0.04);
+}
+
+.song-card h2 {
+  margin: 0;
+  font-size: 1.7rem;
+  font-weight: 600;
+  color: var(--studio-charcoal);
+  overflow-wrap: anywhere;
+}
+
+.song-card p {
+  margin: 0;
+  color: var(--studio-slate);
+  overflow-wrap: anywhere;
+}
+
+.song-card img {
+  border-radius: 12px;
+}
+
+.st-key-review_back [data-testid="stButton"] > button {
+  width: 2.5rem;
+  min-width: 2.5rem;
+  padding: 0;
+}
+
+.review-pick [data-testid="stButton"] > button,
+.st-key-review_pick [data-testid="stButton"] > button {
+  width: 100%;
+  text-align: left;
+}
+
+.review-dests [data-testid="stButton"] > button,
+.st-key-review_dests [data-testid="stButton"] > button {
+  width: 100%;
+}
+
+.review-dests [data-testid="stHorizontalBlock"],
+.st-key-review_dests [data-testid="stHorizontalBlock"] {
+  align-items: center;
+}
+
+.review-arrows [data-testid="stHorizontalBlock"],
+.st-key-review_arrows [data-testid="stHorizontalBlock"] {
+  align-items: center;
+}
+
+.review-arrows [data-testid="stButton"] > button,
+.st-key-review_arrows [data-testid="stButton"] > button {
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto;
+  display: block;
+  font-size: 1.4rem;
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  [data-testid="stMainBlockContainer"] {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 5.5rem;
+  }
+
+  .song-card {
+    min-height: 280px;
+    padding: 1.25rem;
+  }
+}
