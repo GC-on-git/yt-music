@@ -21,6 +21,15 @@ def start_named_job(job_type: str, payload: dict | None = None) -> None:
         start_job(job_type, payload)
     except JobBusyError as exc:
         st.warning(str(exc))
+    except Exception as exc:  # noqa: BLE001
+        text = str(exc)
+        if "database is locked" in text.lower():
+            st.warning(
+                "Database is busy (another import/publish or page refresh held a lock). "
+                "Wait a few seconds and try again."
+            )
+            return
+        raise
 
 
 def _pause_job(job_id: int) -> None:

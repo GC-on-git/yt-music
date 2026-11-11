@@ -9,7 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import Any
 
 from src.config import get_settings
-from src.db.connection import connect
+from src.db.connection import connect, with_retry
 from src.db.repository import Repository
 from src.db.schema import init_db
 from src.integrations.llm import LlmClient
@@ -43,62 +43,74 @@ class JobBusyError(RuntimeError):
 
 def start_job(job_type: str, payload: dict[str, Any] | None = None) -> int:
     group = _group(job_type)
-    with _START_LOCK:
-        conn = connect()
-        try:
-            init_db(conn)
-            repo = Repository(conn)
-            if repo.active_job_in(group):
-                raise JobBusyError("A job of this type is already running.")
-            job_id = repo.create_job(job_type, payload)
-        finally:
-            conn.close()
+
+    def _create() -> int:
+        with _START_LOCK:
+            conn = connect()
+            try:
+                init_db(conn)
+                repo = Repository(conn)
+                if repo.active_job_in(group):
+                    raise JobBusyError("A job of this type is already running.")
+                return repo.create_job(job_type, payload)
+            finally:
+                conn.close()
+
+    job_id = with_retry(_create)
     _EXECUTOR.submit(_execute, job_id)
     return job_id
 
 
 def request_command(job_id: int, command: str) -> None:
     """Queue pause/resume/stop and reflect it in status immediately for the UI."""
-    conn = connect()
-    try:
-        init_db(conn)
-        repo = Repository(conn)
-        job = repo.get_job(job_id)
-        if not job:
-            return
-        current_status = str(job["status"])
-        command = str(command or "").strip().lower()
-        transition = apply_job_command(current_status, command)
-        if transition is None:
-            return
-        next_status, message, next_command = transition
-        repo.set_job_command(job_id, next_command)
-        repo.append_job_log(job_id, f"{command.capitalize()} requested.")
-        repo.set_job_status(job_id, next_status, message)
-        if next_status in TERMINAL_JOB_STATUSES:
-            repo.set_job_command(job_id, "")
-    finally:
-        conn.close()
+
+    def _run() -> None:
+        conn = connect()
+        try:
+            init_db(conn)
+            repo = Repository(conn)
+            job = repo.get_job(job_id)
+            if not job:
+                return
+            current_status = str(job["status"])
+            cmd = str(command or "").strip().lower()
+            transition = apply_job_command(current_status, cmd)
+            if transition is None:
+                return
+            next_status, message, next_command = transition
+            repo.set_job_command(job_id, next_command)
+            repo.append_job_log(job_id, f"{cmd.capitalize()} requested.")
+            repo.set_job_status(job_id, next_status, message)
+            if next_status in TERMINAL_JOB_STATUSES:
+                repo.set_job_command(job_id, "")
+        finally:
+            conn.close()
+
+    with_retry(_run)
 
 
 def cancel_active_jobs(job_types: tuple[str, ...] | list[str]) -> int:
     """Force-cancel any active jobs in this group. Returns how many were cancelled."""
-    conn = connect()
-    try:
-        init_db(conn)
-        repo = Repository(conn)
-        cancelled = 0
-        while True:
-            job = repo.active_job_in(list(job_types))
-            if not job:
-                return cancelled
-            repo.set_job_command(int(job["id"]), "stop")
-            repo.append_job_log(int(job["id"]), "Force cancelled.")
-            repo.set_job_status(int(job["id"]), "cancelled", "Stopped.")
-            repo.set_job_command(int(job["id"]), "")
-            cancelled += 1
-    finally:
-        conn.close()
+
+    def _run() -> int:
+        conn = connect()
+        try:
+            init_db(conn)
+            repo = Repository(conn)
+            cancelled = 0
+            while True:
+                job = repo.active_job_in(list(job_types))
+                if not job:
+                    return cancelled
+                repo.set_job_command(int(job["id"]), "stop")
+                repo.append_job_log(int(job["id"]), "Force cancelled.")
+                repo.set_job_status(int(job["id"]), "cancelled", "Stopped.")
+                repo.set_job_command(int(job["id"]), "")
+                cancelled += 1
+        finally:
+            conn.close()
+
+    return with_retry(_run)
 
 
 def _group(job_type: str) -> tuple[str, ...]:
